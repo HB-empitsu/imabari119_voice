@@ -56,7 +56,7 @@ def make_voice(current, fn):
         text.append("電話")
         text.append(f'{hospital["daytime"]}')
 
-    message = "\n".join(text)
+    message = "、".join(text)
 
     print(message)
 
