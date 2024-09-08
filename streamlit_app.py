@@ -64,7 +64,7 @@ def make_voice(current, fn):
     tts.save(fn)
 
 
-@st.cache_data
+@st.cache_data(ttl="3h")
 def load_data():
     url = f"{base_url}/data.json"
 
