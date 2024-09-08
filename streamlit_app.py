@@ -105,7 +105,7 @@ if selected_date:
         st.subheader(data[chois]["date_week"])
 
         df = pd.DataFrame(data[chois]["hospitals"]).reindex(
-            columns=["name", "medical", "time", "daytime", "address", "lat", "lon"]
+            columns=["name", "medical", "time", "daytime", "address", "lat", "lon", "type"]
         )
 
         st.dataframe(
@@ -126,18 +126,43 @@ if selected_date:
         else:
             st.write("音声データが見つかりません")
 
+        gdf = (
+            df.groupby("name")
+            .agg(
+                {
+                    "medical": "・".join,
+                    "type": "first",
+                    "address": "first",
+                    "lat": "first",
+                    "lon": "first",
+                }
+            )
+            .reset_index()
+        )
+
         m = folium.Map(
             location=[df["lat"].mean(), df["lon"].mean()],
             tiles="https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png",
             attr='&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a>',
-            zoom_start=12,
+            zoom_start=10,
         )
 
-        for _, r in df.iterrows():
+        for _, r in gdf.iterrows():
+            match r["type"]:
+                case 6:
+                    color = "orange"
+                case 7:
+                    color = "green"
+                case 9:
+                    color = "blue"
+                case _:
+                    color = "red"
+
             folium.Marker(
                 location=[r["lat"], r["lon"]],
-                popup=folium.Popup(f'<p>{r["name"]}</p>', max_width=300),
+                popup=folium.Popup(f'<p>{r["name"]}</p><p>{r["medical"]}</p>', max_width=300),
                 tooltip=r["name"],
+                icon=folium.Icon(color=color),
             ).add_to(m)
 
         st_data = st_folium(m, width=700, height=500, returned_objects=[])
