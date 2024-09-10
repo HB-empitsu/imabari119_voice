@@ -105,17 +105,18 @@ if selected_date:
         st.subheader(data[chois]["date_week"])
 
         df = pd.DataFrame(data[chois]["hospitals"]).reindex(
-            columns=["name", "medical", "time", "daytime", "address", "lat", "lon", "type"]
+            columns=["name", "medical", "time", "daytime", "address", "lat", "lon", "type", "link"]
         )
 
         st.dataframe(
-            df[["name", "medical", "time", "daytime", "address"]],
+            df[["name", "medical", "time", "daytime", "address", "link"]],
             column_config={
                 "name": "医療機関名",
                 "medical": "診療科目",
                 "time": "診療時間",
                 "daytime": "電話番号",
                 "address": "住所",
+                "link": st.column_config.LinkColumn("リンク", display_text="詳細"),
             },
             use_container_width=True,
             hide_index=True,
@@ -160,7 +161,10 @@ if selected_date:
 
             folium.Marker(
                 location=[r["lat"], r["lon"]],
-                popup=folium.Popup(f'<p>{r["name"]}</p><p>{r["medical"]}</p>', max_width=300),
+                popup=folium.Popup(
+                    f'<p>{r["name"]}</p><p>{r["medical"]}</p>',
+                    max_width=300,
+                ),
                 tooltip=r["name"],
                 icon=folium.Icon(color=color),
             ).add_to(m)
