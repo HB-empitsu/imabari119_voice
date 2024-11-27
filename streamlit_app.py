@@ -169,6 +169,6 @@ if selected_date:
                 icon=folium.Icon(color=color),
             ).add_to(m)
 
-        st_data = st_folium(m, width=700, height=500, returned_objects=[])
+        st_data = st_folium(m, height=400, use_container_width=True, returned_objects=[])
     else:
         st.write("データが見つかりません")
