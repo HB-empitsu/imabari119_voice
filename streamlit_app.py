@@ -172,3 +172,7 @@ if selected_date:
         st_data = st_folium(m, height=400, use_container_width=True, returned_objects=[])
     else:
         st.write("データが見つかりません")
+        
+st.markdown(
+    "[![Code for Imabari](https://imabari.jpn.org/c4i/logo_Code4Imabari_blue.svg)](https://www.code4imabari.org/)"
+)
