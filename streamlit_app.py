@@ -173,6 +173,4 @@ if selected_date:
     else:
         st.write("データが見つかりません")
         
-st.markdown(
-    "[![Code for Imabari](https://imabari.jpn.org/c4i/logo_Code4Imabari_blue.svg)](https://www.code4imabari.org/)"
-)
+st.markdown("Powered by [Code for Imabari](https://www.code4imabari.org/)")
