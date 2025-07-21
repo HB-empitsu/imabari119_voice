@@ -141,35 +141,39 @@ if selected_date:
             .reset_index()
         )
 
-        m = folium.Map(
-            location=[df["lat"].mean(), df["lon"].mean()],
-            tiles="https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png",
-            attr='&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a>',
-            zoom_start=10,
-        )
+        map_cont = st.container(height=735, border=True)
+        
+        with map_cont:
 
-        for _, r in gdf.iterrows():
-            match r["type"]:
-                case 6:
-                    color = "orange"
-                case 7:
-                    color = "green"
-                case 9:
-                    color = "blue"
-                case _:
-                    color = "red"
-
-            folium.Marker(
-                location=[r["lat"], r["lon"]],
-                popup=folium.Popup(
-                    f'<p>{r["name"]}</p><p>{r["medical"]}</p>',
-                    max_width=300,
-                ),
-                tooltip=r["name"],
-                icon=folium.Icon(color=color),
-            ).add_to(m)
-
-        st_data = st_folium(m, height=400, use_container_width=True, returned_objects=[])
+            m = folium.Map(
+                location=[df["lat"].mean(), df["lon"].mean()],
+                tiles="https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png",
+                attr='&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a>',
+                zoom_start=10,
+            )
+    
+            for _, r in gdf.iterrows():
+                match r["type"]:
+                    case 6:
+                        color = "orange"
+                    case 7:
+                        color = "green"
+                    case 9:
+                        color = "blue"
+                    case _:
+                        color = "red"
+    
+                folium.Marker(
+                    location=[r["lat"], r["lon"]],
+                    popup=folium.Popup(
+                        f'<p>{r["name"]}</p><p>{r["medical"]}</p>',
+                        max_width=300,
+                    ),
+                    tooltip=r["name"],
+                    icon=folium.Icon(color=color),
+                ).add_to(m)
+    
+            st_data = st_folium(m, use_container_width=True, returned_objects=[])
     else:
         st.write("データが見つかりません")
 
