@@ -45,7 +45,7 @@ def make_voice(current, fn):
 
     for hospital in current["hospitals"]:
         match hospital["type"]:
-            case 6 | 7:
+            case 7 | 8:
                 text.append(f'{hospital["medical"]}の診察は')
             case 9:
                 text.append("島しょ部の診察は")
@@ -154,9 +154,9 @@ if selected_date:
     
             for _, r in gdf.iterrows():
                 match r["type"]:
-                    case 6:
-                        color = "orange"
                     case 7:
+                        color = "orange"
+                    case 8:
                         color = "green"
                     case 9:
                         color = "blue"
